@@ -1,0 +1,217 @@
+:root {
+    --primary-color: #1d9bf0; /* Twitter Blue (Icons/Links only) */
+    --btn-black: #0f1419;     /* Main Action Buttons */
+    --btn-black-hover: #272c30;
+    --bg-color: #ffffff;
+    --text-main: #0f1419;
+    --text-secondary: #536471;
+    --border-color: #eff3f4;
+    --hover-bg: #e7e7e8;
+    --modal-bg: rgba(0, 0, 0, 0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+body { background-color: var(--bg-color); color: var(--text-main); height: 100vh; overflow-y: scroll; }
+a { text-decoration: none; color: var(--primary-color); font-weight: 600; }
+a:hover { text-decoration: underline; }
+button { cursor: pointer; border: none; outline: none; background: none; }
+
+/* ==============================
+   AUTH PAGES (Centered Card)
+   ============================== */
+.auth-body {
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Vertically Center */
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* BRANDING LOGO */
+.auth-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+.auth-brand i {
+    font-size: 40px;
+    color: var(--text-main);
+}
+.auth-brand span {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -1px;
+}
+
+.auth-card {
+    background-color: #ffffff;
+    width: 350px;
+    padding: 0 24px 30px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-header { margin-bottom: 24px; margin-top: 24px; }
+.auth-header h1 { font-size: 32px; font-weight: 600; color: #202124; }
+.auth-header p { font-size: 16px; margin-top: 5px; color: var(--text-secondary); }
+
+.form-group { display: flex; flex-direction: column; gap: 20px; }
+.input-container { position: relative; width: 100%; }
+
+.input-container input {
+    width: 100%; padding: 14px 12px; font-size: 16px; 
+    border: 1px solid #000000; border-radius: 4px; transition: 0.1s;
+}
+.input-container input:focus { border: 2px solid var(--btn-black); padding: 13px 11px; outline: none; }
+
+.auth-submit-btn {
+    background-color: var(--btn-black); color: white; font-size: 16px; font-weight: 700; 
+    padding: 14px; border-radius: 28px; width: 100%; transition: 0.2s; margin-top: 10px;
+}
+.auth-submit-btn:hover { background-color: var(--btn-black-hover); }
+
+.auth-footer { text-align: center; margin-top: 20px; font-size: 16px; }
+
+/* ==============================
+   MAIN APP LAYOUT
+   ============================== */
+.layout { display: flex; justify-content: center; max-width: 1265px; margin: 0 auto; min-height: 100vh; }
+
+/* Sidebar */
+.sidebar { width: 275px; padding: 20px 20px 0 20px; position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--border-color); }
+.nav-link { display: flex; align-items: center; gap: 20px; padding: 12px; border-radius: 99px; font-size: 20px; color: var(--text-main); margin-bottom: 5px; transition:0.2s;}
+.nav-link:hover { background-color: var(--hover-bg); }
+.nav-link.active { font-weight: 700; }
+
+.sidebar-post-btn { 
+    background-color: var(--btn-black); color: white; font-weight: 700; font-size: 17px; 
+    width: 90%; padding: 15px 0; border-radius: 99px; margin-top: 20px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: 0.2s; 
+}
+.sidebar-post-btn:hover { background-color: var(--btn-black-hover); }
+
+.user-pill { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 99px; margin-bottom: 20px; cursor: pointer; transition: 0.2s; position: relative; }
+.user-pill:hover { background-color: var(--hover-bg); }
+.user-avatar-sm { width: 40px; height: 40px; background: #eff3f4; border-radius: 50%; display:flex; align-items:center; justify-content:center; font-weight:bold; color: #536471;}
+
+/* USER POPUP MENU (Roll Up) */
+.user-popup-menu {
+    position: absolute;
+    bottom: 80px; /* Above the pill */
+    left: 10px; /* Aligned with pill */
+    width: 250px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    padding: 10px 0;
+    display: none;
+    flex-direction: column;
+    z-index: 100;
+    animation: rollUp 0.2s ease-out;
+}
+@keyframes rollUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.user-popup-menu.show { display: flex; }
+.menu-item {
+    padding: 12px 16px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+    text-align: left;
+}
+.menu-item:hover { background-color: var(--hover-bg); }
+
+/* Feed & Composer */
+.main-feed { width: 600px; border-right: 1px solid var(--border-color); }
+.feed-header { position: sticky; top: 0; background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); padding: 10px 16px; z-index: 10; cursor: pointer; }
+.feed-title { font-weight: 800; font-size: 20px; }
+
+.composer-container { padding: 16px; display: flex; gap: 12px; border-bottom: 1px solid var(--border-color); }
+.composer-textarea { width: 100%; border: none; font-size: 20px; outline: none; resize: none; margin-top: 10px; }
+.composer-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; border-top: 1px solid var(--border-color); padding-top: 10px; }
+.icon-row i { color: var(--primary-color); font-size: 20px; padding: 8px; border-radius: 50%; cursor: pointer; }
+.icon-row i:hover { background-color: #e8f5fd; }
+
+.post-submit-btn { background-color: #cfd9de; color: white; border-radius: 99px; padding: 8px 16px; font-weight: 700; font-size: 15px; pointer-events: none; }
+.post-submit-btn.active { background-color: var(--btn-black); pointer-events: auto; }
+.post-submit-btn.active:hover { background-color: var(--btn-black-hover); }
+
+/* Posts */
+.post { padding: 12px 16px; border-bottom: 1px solid var(--border-color); display: flex; gap: 12px; cursor: pointer; transition: 0.2s; }
+.post:hover { background-color: #f7f9f9; }
+.post-header { display: flex; gap: 5px; font-size: 15px; }
+.post-name { font-weight: 700; }
+.post-handle { color: var(--text-secondary); }
+.post-content { margin-top: 4px; font-size: 15px; line-height: 20px; white-space: pre-wrap;}
+
+.no-posts-message {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 18px;
+    background-color: #f7f9f9;
+    margin: 20px;
+    border-radius: 12px;
+}
+
+/* Profile Page */
+.profile-banner { height: 200px; background-color: #cfd9de; width: 100%; }
+.profile-details { padding: 12px 16px; position: relative; }
+.profile-avatar-lg { width: 134px; height: 134px; border-radius: 50%; background-color: var(--btn-black); color: white; font-size: 60px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 4px solid white; position: absolute; top: -67px; left: 16px; }
+.edit-profile-btn { float: right; border: 1px solid #cfd9de; border-radius: 999px; padding: 6px 16px; font-weight: 700; font-size: 15px; color: var(--btn-black); transition: 0.2s; }
+.edit-profile-btn:hover { background-color: var(--hover-bg); }
+.profile-info { margin-top: 75px; }
+.profile-name { font-weight: 900; font-size: 24px; color: black; line-height: 1.2; }
+.profile-tabs { display: flex; border-bottom: 1px solid var(--border-color); margin-top: 10px; }
+.tab-item { flex: 1; text-align: center; padding: 16px 0; font-weight: 500; color: var(--text-secondary); cursor: pointer; position: relative; transition: 0.2s; }
+.tab-item:hover { background-color: var(--hover-bg); }
+.tab-item.active { color: var(--text-main); font-weight: 700; }
+.tab-item.active::after { content: ''; position: absolute; bottom: 0; left: 25%; width: 50%; height: 4px; background-color: var(--btn-black); border-radius: 2px; }
+.skills-section { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
+.skill-tag { background-color: #eff3f4; color: var(--text-secondary); padding: 4px 12px; border-radius: 16px; font-size: 13px; font-weight: 600; }
+
+/* Right Sidebar */
+.right-sidebar { width: 350px; padding: 12px 24px; }
+.search-box { background-color: #eff3f4; border-radius: 99px; padding: 10px 20px; display: flex; align-items: center; gap: 10px; color: var(--text-secondary); }
+.search-box input { background: transparent; border: none; outline: none; font-size: 15px; width: 100%; }
+
+/* Notifications & Connect Styles */
+.notification-item, .connect-item { padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; gap: 12px; transition: 0.2s; }
+.notification-item:hover, .connect-item:hover { background-color: #f7f9f9; }
+.connect-item { justify-content: space-between; align-items: center; }
+.connect-info { display: flex; align-items: center; gap: 10px; }
+.btn-accept, .connect-btn { background-color: var(--btn-black); color: white; padding: 6px 16px; border-radius: 99px; font-weight: 700; font-size: 14px; min-width: 80px; }
+.btn-accept:hover, .connect-btn:hover { background-color: var(--btn-black-hover); }
+.btn-decline { border: 1px solid #cfd9de; color: var(--text-main); padding: 6px 16px; border-radius: 99px; font-weight: 700; font-size: 14px; }
+.connect-btn.sent { background-color: white; border: 1px solid #cfd9de; color: var(--text-secondary); cursor: default; }
+
+/* Modal */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: var(--modal-bg); }
+.modal-content { background-color: #fff; margin: 15% auto; border-radius: 16px; width: 400px; padding: 20px; }
+
+/* Logout Confirmation Modal */
+.logout-content {
+    background-color: #fff;
+    margin: 30vh auto;
+    border-radius: 16px;
+    width: 320px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.logout-content h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+.logout-content p { color: var(--text-secondary); font-size: 15px; margin-bottom: 20px; }
+.btn-logout-confirm { background-color: var(--btn-black); color: white; padding: 12px; border-radius: 24px; font-weight: 700; font-size: 15px; width: 100%; }
+.btn-logout-cancel { background-color: white; border: 1px solid #cfd9de; color: var(--text-main); padding: 12px; border-radius: 24px; font-weight: 700; font-size: 15px; width: 100%; }
