@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Dashboard | AlumniConnect</title>
+    <style>
+        /* --- GLOBAL STYLES --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* --- NAVIGATION (UPDATED to match Student View) --- */
+        .navbar {
+            background-color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #007bff; /* Consistent Blue Color */
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: #007bff; }
+        .nav-links a.active { color: #007bff; font-weight: 600; }
+
+        /* User Profile in Navbar */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 20px;
+            border-left: 1px solid #eee;
+        }
+
+        .user-name {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .avatar-small {
+            width: 35px; height: 35px;
+            background-color: #e3f2fd; /* Light Blue Background */
+            color: #007bff;           /* Blue Text */
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* --- LAYOUT --- */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* --- STATS ROW --- */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: center;
+            border: 1px solid #eee;
+        }
+
+        .stat-number { font-size: 28px; font-weight: bold; color: #007bff; margin-bottom: 5px; }
+        .stat-label { color: #666; font-size: 14px; font-weight: 500; }
+
+        /* --- REQUESTS LIST --- */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .section-title { margin: 0; color: #333; font-size: 1.2rem; }
+
+        .request-card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-left: 4px solid #007bff; /* Matching Blue Accent */
+        }
+
+        .request-info h3 { margin: 0 0 8px 0; color: #333; font-size: 1.1rem; }
+        .request-info p { margin: 8px 0; color: #555; font-size: 14px; line-height: 1.6; }
+        .meta-info { font-size: 12px; color: #999; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column; /* Stack buttons on smaller screens if needed */
+            gap: 10px;
+            min-width: 120px;
+            margin-left: 20px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-accept { 
+            background-color: #007bff; 
+            color: white; 
+        }
+        .btn-accept:hover { background-color: #0056b3; }
+
+        .btn-decline { 
+            background-color: white; 
+            color: #dc3545; 
+            border: 1px solid #dc3545;
+        }
+        .btn-decline:hover { background-color: #fff5f5; }
+
+        /* --- EMPTY STATE --- */
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: #888;
+            display: none;
+            background: white;
+            border-radius: 8px;
+            border: 1px dashed #ccc;
+        }
+
+        /* --- ANIMATIONS --- */
+        .fade-out {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">AlumniConnect</div>
+        
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#" class="active">Mentorship</a>
+                <a href="#">Resources</a>
+            </div>
+
+            <div class="user-profile">
+                <span class="user-name">Alex Smith (Mentor)</span>
+                <div class="avatar-small">AS</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-number" id="pending-count">2</div>
+                <div class="stat-label">Pending Requests</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Active Mentees</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Past Sessions</div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2 class="section-title">Incoming Requests</h2>
+        </div>
+        
+        <div id="requests-container">
+            <div class="request-card" id="req-1">
+                <div class="request-info">
+                    <div class="meta-info">Received: Today, 10:30 AM</div>
+                    <h3>Jordan Lee <span style="font-weight:normal; color:#666; font-size:0.9em">(Computer Science, Year 3)</span></h3>
+                    <p><strong>Goal:</strong> "I am really interested in your work on System Design at TechCorp. I'm currently struggling with backend architecture and would love your guidance on my final year project."</p>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-accept" onclick="handleDecision('req-1', 'accepted')">Accept Request</button>
+                    <button class="btn btn-decline" onclick="handleDecision('req-1', 'declined')">Decline</button>
+                </div>
+            </div>
+
+            <div class="request-card" id="req-2">
+                <div class="request-info">
+                    <div class="meta-info">Received: Yesterday</div>
+                    <h3>Sarah Connor <span style="font-weight:normal; color:#666; font-size:0.9em">(Data Science, Year 4)</span></h3>
+                    <p><strong>Goal:</strong> "I noticed you used to work in AI. I am looking for advice on how to break into the AI industry as a fresh graduate."</p>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-accept" onclick="handleDecision('req-2', 'accepted')">Accept Request</button>
+                    <button class="btn btn-decline" onclick="handleDecision('req-2', 'declined')">Decline</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="empty-state" id="empty-msg">
+            <h3>All caught up!</h3>
+            <p>You have no pending mentorship requests at the moment.</p>
+        </div>
+
+    </div>
+
+    <script>
+        function handleDecision(cardId, decision) {
+            const card = document.getElementById(cardId);
+            const countElement = document.getElementById('pending-count');
+            let currentCount = parseInt(countElement.innerText);
+
+            // 1. CONFIRMATION
+            let confirmMsg = decision === 'accepted' 
+                ? "Accept this student? They will be notified immediately."
+                : "Decline this request?";
+
+            if (!confirm(confirmMsg)) return;
+
+            // 2. ANIMATION
+            card.classList.add('fade-out');
+
+            // 3. LOGIC
+            setTimeout(() => {
+                card.style.display = 'none'; 
+                
+                // Update counter
+                currentCount--;
+                countElement.innerText = currentCount;
+
+                // Check empty state
+                if (currentCount === 0) {
+                    document.getElementById('empty-msg').style.display = 'block';
+                }
+
+                // Feedback
+                if (decision === 'accepted') {
+                    // In a real app, this would trigger the 'Notify' email from your diagram
+                    alert(`✅ Request Accepted! Contact details sent.`);
+                }
+            }, 400);
+        }
+    </script>
+</body>
+</html>

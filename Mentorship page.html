@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentorship Portal</title>
+    <style>
+        /* --- 1. GLOBAL STYLES (The Canvas) --- */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* --- 2. NAVIGATION BAR --- */
+        .navbar {
+            background-color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            margin-left: 20px;
+            font-weight: 500;
+        }
+
+        .nav-links a.active {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+        }
+
+        /* --- 3. LAYOUT CONTAINER --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* --- 4. SEARCH SECTION --- */
+        .search-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        input[type="text"], select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        input[type="text"] { flex-grow: 1; } /* Takes available space */
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover { background-color: #0056b3; }
+
+        /* --- 5. MENTOR GRID (The Cards) --- */
+        .mentor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+
+        .card-body { padding: 25px; }
+
+        .mentor-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e3f2fd;
+            color: #007bff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .tags span {
+            background-color: #f1f1f1;
+            color: #555;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            margin-right: 5px;
+        }
+
+        .btn-outline {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background: transparent;
+            border: 1px solid #007bff;
+            color: #007bff;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .btn-outline:hover { background-color: #f0f8ff; }
+
+        /* --- 6. MODAL (Popup) --- */
+        .modal-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Keeps padding inside width */
+            font-family: inherit;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-secondary {
+            background: #eee;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* --- 7. NOTIFICATIONS (Toasts) --- */
+        #notification-area {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .toast {
+            background: #333;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .toast.success { background: #28a745; }
+        .toast.error { background: #dc3545; }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="logo">AlumniConnect</div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#" class="active">Mentorship</a>
+            <a href="#">Profile</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Find a Mentor</h1>
+        
+        <div class="search-panel">
+            <input type="text" placeholder="Search by name or company...">
+            <select>
+                <option>All Expertise</option>
+                <option>Engineering</option>
+                <option>Design</option>
+            </select>
+            <button class="btn-primary">Search</button>
+        </div>
+
+        <div class="mentor-grid">
+            <div class="card">
+                <div class="card-body">
+                    <div class="mentor-header">
+                        <div class="avatar">AS</div>
+                        <div>
+                            <h3>Alex Smith</h3>
+                            <small>Senior Engineer @ TechCorp</small>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span>Python</span>
+                        <span>System Design</span>
+                    </div>
+                    <button class="btn-outline" onclick="openModal('Alex Smith')">Request Mentorship</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="mentor-header">
+                        <div class="avatar" style="background-color: #e8f5e9; color: #2e7d32;">JD</div>
+                        <div>
+                            <h3>Jane Doe</h3>
+                            <small>Product Lead @ StartupX</small>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        <span>Product Strategy</span>
+                        <span>UX</span>
+                    </div>
+                    <button class="btn-outline" onclick="openModal('Jane Doe')">Request Mentorship</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="request-modal">
+        <div class="modal">
+            <h2 style="margin-top:0">Request Mentorship</h2>
+            <p>Message to <b id="modal-mentor-name">...</b>:</p>
+            <textarea placeholder="Why are you seeking mentorship?"></textarea>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn-primary" onclick="submitRequest()">Send Request</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification-area"></div>
+
+    <script>
+        const modal = document.getElementById('request-modal');
+        const mentorNameSpan = document.getElementById('modal-mentor-name');
+        let currentMentor = '';
+
+        function openModal(name) {
+            currentMentor = name;
+            mentorNameSpan.innerText = name;
+            modal.style.display = 'flex'; // This makes it visible
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        function submitRequest() {
+            closeModal();
+            showToast('Request Sent! Pending review...', 'primary');
+
+            // Simulate System Logic (Delay)
+            setTimeout(() => {
+                const isAccepted = Math.random() > 0.5;
+                if(isAccepted) {
+                    showToast(`✅ ${currentMentor} accepted your request!`, 'success');
+                } else {
+                    showToast(`❌ ${currentMentor} is currently unavailable.`, 'error');
+                }
+            }, 2500);
+        }
+
+        function showToast(msg, type) {
+            const area = document.getElementById('notification-area');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerText = msg;
+            area.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+    </script>
+</body>
+</html>
