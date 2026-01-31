@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Feedback | AlumniConnect</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .feedback-card {
+            background-color: white;
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .icon-header { font-size: 50px; color: #0f1419; margin-bottom: 20px; }
+        h2 { margin: 0 0 10px 0; color: #0f1419; }
+        p { margin: 0 0 25px 0; color: #536471; font-size: 15px; }
+
+        /* INPUT STYLES */
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #cfd9de;
+            font-family: inherit;
+            font-size: 16px;
+            resize: none;
+            box-sizing: border-box;
+            height: 150px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        textarea:focus { outline: none; border-color: #0f1419; background-color: white; }
+
+        /* BUTTON STYLES */
+        .send-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #0f1419;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .send-btn:hover { background-color: #333; }
+
+        .back-link {
+            display: block; margin-top: 20px; color: #536471; 
+            text-decoration: none; font-size: 14px;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        .success-box { display: none; }
+        .check-icon { font-size: 60px; color: #00ba7c; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="feedback-card">
+        
+        <form id="feedbackForm" onsubmit="handleFormSubmit(event)">
+            
+            <i class='bx bxs-message-square-edit icon-header'></i>
+            <h2>We value your feedback</h2>
+            <p>Let us know how we can improve your experience.</p>
+            
+            <textarea id="feedbackText" name="user_feedback" placeholder="Type your message here..." required></textarea>
+            
+            <button type="submit" class="send-btn">Send Feedback</button>
+            
+            <a href="home.html" class="back-link">Cancel and return home</a>
+        </form>
+
+        <div id="success-view" class="success-box">
+            <i class='bx bxs-check-circle check-icon'></i>
+            <h2>Thank You!</h2>
+            <p>Your feedback has been sent to our team.</p>
+            <button class="send-btn" style="background-color:#ccc; color:#333;" onclick="window.location.href='home.html'">Return to Dashboard</button>
+        </div>
+
+    </div>
+
+    <script>
+        function handleFormSubmit(event) {
+            // 1. Prevent the default browser action (which is refreshing the page)
+            event.preventDefault();
+
+            // 2. Get the text value
+            var text = document.getElementById("feedbackText").value;
+            
+            // 3. Validation is handled by 'required' attribute in HTML now, 
+            //    but double-checking in JS is good practice.
+            if(text.trim() === "") {
+                return; 
+            }
+
+            // 4. Hide Form, Show Success
+            document.getElementById("feedbackForm").style.display = "none";
+            document.getElementById("success-view").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
