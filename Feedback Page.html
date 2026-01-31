@@ -62,6 +62,7 @@
         }
 
         .send-btn:hover { background-color: #333; }
+        .send-btn:disabled { background-color: #ccc; cursor: not-allowed; }
 
         .back-link {
             display: block; margin-top: 20px; color: #536471; 
@@ -77,15 +78,14 @@
 
     <div class="feedback-card">
         
-        <form id="feedbackForm" onsubmit="handleFormSubmit(event)">
-            
+        <form id="feedbackForm">
             <i class='bx bxs-message-square-edit icon-header'></i>
             <h2>We value your feedback</h2>
             <p>Let us know how we can improve your experience.</p>
             
             <textarea id="feedbackText" name="user_feedback" placeholder="Type your message here..." required></textarea>
             
-            <button type="submit" class="send-btn">Send Feedback</button>
+            <button type="submit" id="submitBtn" class="send-btn">Send Feedback</button>
             
             <a href="home.html" class="back-link">Cancel and return home</a>
         </form>
@@ -93,30 +93,53 @@
         <div id="success-view" class="success-box">
             <i class='bx bxs-check-circle check-icon'></i>
             <h2>Thank You!</h2>
-            <p>Your feedback has been sent to our team.</p>
+            <p>Your feedback has been saved to the database.</p>
             <button class="send-btn" style="background-color:#ccc; color:#333;" onclick="window.location.href='home.html'">Return to Dashboard</button>
         </div>
 
     </div>
 
-    <script>
-        function handleFormSubmit(event) {
-            // 1. Prevent the default browser action (which is refreshing the page)
+    <script type="module">
+        import { supabase } from './supabase.js';
+
+        const form = document.getElementById('feedbackForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const feedbackInput = document.getElementById('feedbackText');
+
+        form.addEventListener('submit', async function(event) {
+            // 1. Prevent page reload
             event.preventDefault();
 
-            // 2. Get the text value
-            var text = document.getElementById("feedbackText").value;
+            const text = feedbackInput.value;
             
-            // 3. Validation is handled by 'required' attribute in HTML now, 
-            //    but double-checking in JS is good practice.
-            if(text.trim() === "") {
-                return; 
-            }
+            // 2. Simple validation
+            if (!text.trim()) return;
 
-            // 4. Hide Form, Show Success
-            document.getElementById("feedbackForm").style.display = "none";
-            document.getElementById("success-view").style.display = "block";
-        }
+            // 3. Show Loading State
+            submitBtn.innerText = "Sending...";
+            submitBtn.disabled = true;
+
+            try {
+                // 4. Send to Supabase
+                const { error } = await supabase
+                    .from('feedback')
+                    .insert([{ message: text }]);
+
+                if (error) throw error;
+
+                // 5. Success! Switch views
+                document.getElementById("feedbackForm").style.display = "none";
+                document.getElementById("success-view").style.display = "block";
+
+            } catch (err) {
+                console.error("Error sending feedback:", err);
+                alert("Error sending feedback. Please try again.");
+                
+                // Reset button if failed
+                submitBtn.innerText = "Send Feedback";
+                submitBtn.disabled = false;
+            }
+        });
     </script>
 
 </body>
