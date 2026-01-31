@@ -4,155 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mentorship | AlumniConnect</title>
+    <link rel="stylesheet" href="styles.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        /* --- 1. LAYOUT STYLES (Matching Home Page) --- */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: white; margin: 0; display: flex; justify-content: center;
-        }
-
-        .layout {
-            display: flex; width: 100%; max-width: 1200px; min-height: 100vh;
-        }
-
-        /* LEFT SIDEBAR */
-        .sidebar {
-            width: 250px; padding: 20px; border-right: 1px solid #eff3f4;
-            display: flex; flex-direction: column; justify-content: space-between;
-            position: sticky; top: 0; height: 100vh;
-        }
-
-        .nav-link {
-            display: flex; align-items: center; padding: 15px; font-size: 20px;
-            color: #0f1419; text-decoration: none; border-radius: 30px; margin-bottom: 5px;
-            transition: background 0.2s;
-        }
-        .nav-link:hover { background-color: #e7e7e8; }
-        .nav-link.active { font-weight: bold; }
-        .nav-link i { margin-right: 20px; font-size: 26px; }
-
-        .post-btn {
-            background-color: #0f1419; color: white; border: none; padding: 15px;
-            border-radius: 30px; font-size: 17px; font-weight: bold; width: 90%;
-            margin-top: 20px; cursor: pointer;
-        }
-
-        /* --- 2. MAIN FEED AREA --- */
-        .main-feed {
-            flex: 1; border-right: 1px solid #eff3f4; max-width: 600px;
-        }
-
-        .feed-header {
-            padding: 15px; position: sticky; top: 0; background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(5px); border-bottom: 1px solid #eff3f4;
-            font-weight: bold; font-size: 20px; z-index: 10;
-        }
-
-        /* --- 3. MENTORSHIP CONTENT --- */
-        .search-container { padding: 15px; border-bottom: 1px solid #eff3f4; }
-        
-        .search-bar {
-            width: 100%; padding: 12px; border-radius: 20px; border: 1px solid #cfd9de;
-            background-color: #eff3f4; font-size: 15px; box-sizing: border-box;
-        }
-
-        .mentor-list { padding: 0; }
-
-        /* Mentor Card Styles */
-        .mentor-card {
-            padding: 20px; border-bottom: 1px solid #eff3f4;
-            transition: background 0.2s; cursor: pointer;
-        }
+        .search-container { padding: 15px; border-bottom: 1px solid var(--border-color); }
+        .mentor-card { padding: 20px; border-bottom: 1px solid var(--border-color); transition: 0.2s; cursor: pointer; }
         .mentor-card:hover { background-color: #f7f9f9; }
-
         .mentor-header { display: flex; gap: 12px; margin-bottom: 10px; }
-        
-        .avatar {
-            width: 48px; height: 48px; border-radius: 50%; background-color: #e1e8ed;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; color: #536471; flex-shrink: 0;
-        }
-        
-        .mentor-info h3 { margin: 0; font-size: 16px; color: #0f1419; }
-        .mentor-info p { margin: 2px 0 0; color: #536471; font-size: 14px; }
-
-        .tags { display: flex; gap: 8px; margin: 10px 0 15px 60px; } /* Indented to align with text */
-        .tag {
-            background-color: #eff3f4; color: #536471; padding: 4px 12px;
-            border-radius: 12px; font-size: 12px; font-weight: 500;
-        }
-
-        .btn-request {
-            margin-left: 60px; /* Indent */
-            padding: 8px 16px; border: 1px solid #cfd9de; background: white;
-            border-radius: 20px; font-weight: bold; color: #0f1419; cursor: pointer;
-            transition: 0.2s;
-        }
+        .mentor-avatar { width: 48px; height: 48px; background: #eff3f4; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .mentor-info h3 { margin: 0; font-size: 16px; color: var(--text-main); }
+        .mentor-info p { margin: 2px 0 0; color: var(--text-secondary); font-size: 14px; }
+        .tags { display: flex; gap: 8px; margin: 10px 0 15px 60px; }
+        .tag { background-color: #eff3f4; color: var(--text-secondary); padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+        .btn-request { margin-left: 60px; padding: 8px 16px; border: 1px solid #cfd9de; background: white; border-radius: 20px; font-weight: bold; color: var(--btn-black); cursor: pointer; transition: 0.2s; }
         .btn-request:hover { background-color: #eff3f4; }
-
-        /* --- 4. RIGHT SIDEBAR --- */
-        .right-sidebar { width: 350px; padding: 20px; display: none; }
-        @media (min-width: 1000px) { .right-sidebar { display: block; } }
-
-        /* --- MODAL STYLES --- */
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4); z-index: 100;
-            justify-content: center; align-items: center;
-        }
-
-        .modal {
-            background: white; width: 100%; max-width: 500px; padding: 20px;
-            border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        .modal h2 { margin-top: 0; font-size: 20px; }
-        
-        textarea {
-            width: 100%; height: 120px; padding: 10px; margin: 15px 0;
-            border: 1px solid #cfd9de; border-radius: 8px;
-            font-family: inherit; resize: none; box-sizing: border-box;
-        }
-
-        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
-        
-        .btn-primary-modal {
-            background-color: #0f1419; color: white; border: none; padding: 10px 20px;
-            border-radius: 20px; font-weight: bold; cursor: pointer;
-        }
-        .btn-cancel {
-            background: white; border: 1px solid #cfd9de; padding: 10px 20px;
-            border-radius: 20px; font-weight: bold; cursor: pointer;
-        }
-
-        /* TOAST NOTIFICATION */
-        #notification-area { position: fixed; bottom: 20px; right: 20px; z-index: 200; }
-        .toast {
-            background: #1d9bf0; color: white; padding: 15px 25px; border-radius: 5px;
-            margin-top: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
     </style>
 </head>
 <body>
 
 <div class="layout">
-    
     <header class="sidebar">
         <div>
-            <div style="padding: 10px; margin-bottom: 10px;">
-                <i class='bx bxs-network-chart' style="font-size: 30px;"></i>
+            <div class="nav-link" style="width: 50px; height: 50px; justify-content: center;">
+                 <i class='bx bxs-network-chart' style="font-size: 30px;"></i>
             </div>
-            
             <nav>
                 <a href="home.html" class="nav-link">
-                    <i class='bx bx-home-circle'></i> <span>Home</span>
+                    <i class='bx bxs-home-circle'></i> <span>Home</span>
                 </a>
-                
-                <a href="mentorship_final.html" class="nav-link active">
+                <a href="connect.html" class="nav-link">
+                    <i class='bx bx-search'></i> <span>Connect</span>
+                </a>
+                <a href="mentorship.html" class="nav-link active">
                     <i class='bx bx-group'></i> <span>Mentorship</span>
                 </a>
-
                 <a href="notifications.html" class="nav-link">
                     <i class='bx bx-bell'></i> <span>Notifications</span>
                 </a>
@@ -160,151 +45,157 @@
                     <i class='bx bx-user'></i> <span>Profile</span>
                 </a>
             </nav>
-
-            <button class="post-btn">Post</button>
+            <button onclick="window.location.href='home.html'" class="sidebar-post-btn">Post</button>
+        </div>
+        <div id="sidebarUser" class="user-pill">
+            <div class="user-avatar-sm">G</div>
+            <div class="user-meta">
+                <span class="post-name">Guest</span>
+                <span class="user-handle" style="font-size: 13px;">@guest_123</span>
+            </div>
         </div>
     </header>
 
     <main class="main-feed">
-        <div class="feed-header">Mentorship Portal</div>
-
-        <div class="search-container">
-            <input type="text" class="search-bar" placeholder="Search mentors by name or company...">
+        <div class="feed-header">
+            <span class="feed-title">Find a Mentor</span>
         </div>
 
-        <div class="mentor-list">
-            
-            <div class="mentor-card">
-                <div class="mentor-header">
-                    <div class="avatar">AS</div>
-                    <div class="mentor-info">
-                        <h3>Alex Smith</h3>
-                        <p>Senior Engineer @ TechCorp</p>
-                    </div>
-                </div>
-                <div class="tags">
-                    <span class="tag">Python</span>
-                    <span class="tag">System Design</span>
-                </div>
-                <button class="btn-request" onclick="openModal('Alex Smith')">Request Mentorship</button>
+        <div class="search-container">
+            <div class="search-box" style="width: 100%; background: #eff3f4;">
+                <i class='bx bx-search'></i>
+                <input type="text" placeholder="Search by name or company...">
             </div>
+        </div>
 
-            <div class="mentor-card">
-                <div class="mentor-header">
-                    <div class="avatar" style="background:#d1f7c4; color:#0f5132">JD</div>
-                    <div class="mentor-info">
-                        <h3>Jane Doe</h3>
-                        <p>Product Lead @ StartupX</p>
-                    </div>
-                </div>
-                <div class="tags">
-                    <span class="tag">Product Strategy</span>
-                    <span class="tag">UX Research</span>
-                </div>
-                <button class="btn-request" onclick="openModal('Jane Doe')">Request Mentorship</button>
-            </div>
-
+        <div id="mentor-list-container">
+            <div style="padding:20px; text-align:center; color:#536471;">Loading mentors...</div>
         </div>
     </main>
 
     <aside class="right-sidebar">
-        <div class="search-bar" style="display:flex; align-items:center;">
-            <i class='bx bx-search' style="color:#536471; margin-right:10px;"></i>
-            <span style="color:#536471;">Search AlumniConnect</span>
+        <div class="search-box">
+            <i class='bx bx-search'></i>
+            <input type="text" placeholder="Search AlumniConnect">
         </div>
     </aside>
-
 </div>
 
-<div class="modal-overlay" id="request-modal">
-    <div class="modal">
-        <h2>Request Mentorship</h2>
-        <p style="color:#536471; margin-bottom:5px;">To: <b id="modal-mentor-name" style="color:#0f1419;">...</b></p>
-        
-        <textarea id="request-message" placeholder="Why are you seeking mentorship from this alumni?"></textarea>
-        
-        <div class="modal-actions">
-            <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-            <button class="btn-primary-modal" id="send-btn" onclick="submitRequest()">Send Request</button>
+<div id="requestModal" class="modal">
+    <div class="modal-content">
+        <h2 style="font-size: 20px; margin-bottom: 10px;">Request Mentorship</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 15px;">
+            Message to <b id="modalMentorName">...</b>
+        </p>
+        <div class="input-container">
+            <textarea id="requestMsg" rows="4" class="composer-textarea" placeholder="Why are you seeking mentorship?" style="border:1px solid #cfd9de; padding:10px; border-radius:8px; font-size:16px;"></textarea>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end;">
+            <button onclick="closeModal()" style="font-weight: bold; color: var(--text-main);">Cancel</button>
+            <button id="sendBtn" onclick="submitRequest()" class="post-submit-btn active" style="width: auto; padding: 10px 20px;">Send</button>
         </div>
     </div>
 </div>
 
-<div id="notification-area"></div>
-
 <script type="module">
     import { supabase } from './supabase.js';
 
-    // Expose functions to HTML
     window.openModal = openModal;
     window.closeModal = closeModal;
     window.submitRequest = submitRequest;
 
-    const modal = document.getElementById('request-modal');
-    const mentorNameSpan = document.getElementById('modal-mentor-name');
-    const messageInput = document.getElementById('request-message');
-    const sendBtn = document.getElementById('send-btn');
+    const mentorContainer = document.getElementById('mentor-list-container');
+    const modal = document.getElementById('requestModal');
+    const nameSpan = document.getElementById('modalMentorName');
+    const msgInput = document.getElementById('requestMsg');
+    const sendBtn = document.getElementById('sendBtn');
     
     let currentMentor = '';
 
+    // --- 1. FETCH MENTORS FROM DATABASE ---
+    async function loadMentors() {
+        const { data, error } = await supabase
+            .from('mentors')
+            .select('*');
+
+        if (error) {
+            mentorContainer.innerHTML = '<div style="padding:20px; text-align:center;">Error loading mentors.</div>';
+            console.error(error);
+            return;
+        }
+
+        if (data.length === 0) {
+            mentorContainer.innerHTML = '<div style="padding:20px; text-align:center;">No mentors found in database.</div>';
+            return;
+        }
+
+        mentorContainer.innerHTML = ''; // Clear loading message
+
+        data.forEach(mentor => {
+            // Split tags string by comma (if it exists)
+            const tagsArray = mentor.tags ? mentor.tags.split(',') : [];
+            const tagsHTML = tagsArray.map(tag => `<span class="tag">${tag.trim()}</span>`).join('');
+
+            const html = `
+                <div class="mentor-card">
+                    <div class="mentor-header">
+                        <div class="mentor-avatar">${mentor.name[0]}</div>
+                        <div class="mentor-info">
+                            <h3>${mentor.name}</h3>
+                            <p>${mentor.job} @ ${mentor.company}</p>
+                        </div>
+                    </div>
+                    <div class="tags">
+                        ${tagsHTML}
+                    </div>
+                    <button class="btn-request" onclick="openModal('${mentor.name}')">Request Mentorship</button>
+                </div>
+            `;
+            mentorContainer.innerHTML += html;
+        });
+    }
+
+    // --- 2. MODAL FUNCTIONS ---
     function openModal(name) {
         currentMentor = name;
-        mentorNameSpan.innerText = name;
-        modal.style.display = 'flex';
+        nameSpan.innerText = name;
+        modal.style.display = 'block';
     }
 
     function closeModal() {
         modal.style.display = 'none';
-        messageInput.value = ''; 
+        msgInput.value = '';
     }
 
     async function submitRequest() {
-        const message = messageInput.value;
+        const message = msgInput.value;
+        if(!message) return alert("Please enter a message");
 
-        // Validation
-        if (!message.trim()) {
-            alert('Please enter a message.');
-            return;
-        }
-
-        // Loading
         sendBtn.innerText = "Sending...";
         sendBtn.disabled = true;
 
-        try {
-            // INSERT INTO DATABASE
-            const { data, error } = await supabase
-                .from('mentorship_requests')
-                .insert([
-                    { 
-                        mentor_name: currentMentor, 
-                        message: message,
-                        status: 'Pending'
-                    }
-                ]);
+        const { error } = await supabase
+            .from('mentorship_requests')
+            .insert([{ mentor_name: currentMentor, message: message, status: 'Pending' }]);
 
-            if (error) throw error;
-
+        if (error) {
+            console.error(error);
+            alert("Error sending request!");
+        } else {
+            alert("Request sent successfully!");
             closeModal();
-            showToast(`Request sent to ${currentMentor}`);
-
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error saving request: ' + error.message);
-        } finally {
-            sendBtn.innerText = "Send Request";
-            sendBtn.disabled = false;
         }
+
+        sendBtn.innerText = "Send";
+        sendBtn.disabled = false;
     }
 
-    function showToast(msg) {
-        const area = document.getElementById('notification-area');
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.innerText = msg;
-        area.appendChild(toast);
-        setTimeout(() => toast.remove(), 4000);
+    window.onclick = function(event) {
+        if (event.target == modal) closeModal();
     }
+
+    // Load Data
+    loadMentors();
 </script>
 
 </body>
