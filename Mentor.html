@@ -3,122 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentor Dashboard | AlumniConnect</title>
+    <title>Mentorship Requests | AlumniConnect</title>
+    <link rel="stylesheet" href="styles.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        /* --- 1. LAYOUT STYLES (Standard) --- */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: white; margin: 0; display: flex; justify-content: center;
-        }
-
-        .layout {
-            display: flex; width: 100%; max-width: 1200px; min-height: 100vh;
-        }
-
-        /* SIDEBAR */
-        .sidebar {
-            width: 250px; padding: 20px; border-right: 1px solid #eff3f4;
-            display: flex; flex-direction: column; justify-content: space-between;
-            position: sticky; top: 0; height: 100vh;
-        }
-
-        .nav-link {
-            display: flex; align-items: center; padding: 15px; font-size: 20px;
-            color: #0f1419; text-decoration: none; border-radius: 30px; margin-bottom: 5px;
-            transition: background 0.2s;
-        }
-        .nav-link:hover { background-color: #e7e7e8; }
-        .nav-link.active { font-weight: bold; }
-        .nav-link i { margin-right: 20px; font-size: 26px; }
-
-        .post-btn {
-            background-color: #0f1419; color: white; border: none; padding: 15px;
-            border-radius: 30px; font-size: 17px; font-weight: bold; width: 90%;
-            margin-top: 20px; cursor: pointer;
-        }
-
-        /* --- 2. MAIN FEED AREA --- */
-        .main-feed {
-            flex: 1; border-right: 1px solid #eff3f4; max-width: 600px;
-        }
-
-        .feed-header {
-            padding: 15px; position: sticky; top: 0; background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(5px); border-bottom: 1px solid #eff3f4;
-            font-weight: bold; font-size: 20px; z-index: 10;
-        }
-
-        .content-container { padding: 20px; }
-
-        /* --- 3. DASHBOARD SPECIFIC STYLES --- */
-        
-        /* Stats Row */
+        /* DASHBOARD SPECIFIC STYLES */
         .stats-row {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px;
         }
         .stat-card {
             background: #f7f9f9; padding: 15px; border-radius: 16px; text-align: center;
         }
-        .stat-number { font-size: 24px; font-weight: bold; color: #0f1419; }
-        .stat-label { font-size: 13px; color: #536471; margin-top: 5px; }
+        .stat-number { font-size: 24px; font-weight: bold; color: var(--btn-black); }
+        .stat-label { font-size: 13px; color: var(--text-secondary); margin-top: 5px; }
 
-        /* Section Title */
         .section-title {
-            font-size: 18px; font-weight: bold; margin-bottom: 15px; color: #0f1419;
-            border-bottom: 1px solid #eff3f4; padding-bottom: 10px;
+            font-size: 18px; font-weight: bold; margin-bottom: 15px; color: var(--btn-black);
+            border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
         }
 
-        /* Request Cards */
+        /* Request Card */
         .request-card {
-            background: white; border: 1px solid #eff3f4; border-radius: 16px;
+            background: white; border: 1px solid var(--border-color); border-radius: 16px;
             padding: 20px; margin-bottom: 20px;
-            /* The Blue Accent Border */
-            border-left: 5px solid #1d9bf0; 
+            border-left: 5px solid var(--primary-color); 
             transition: background 0.2s;
         }
         .request-card:hover { background-color: #f8f9fa; }
 
-        .meta-info { font-size: 12px; color: #536471; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-        
+        .meta-info { font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; text-transform: uppercase; }
         h3 { margin: 0 0 5px 0; font-size: 16px; }
-        p { margin: 10px 0; color: #0f1419; font-size: 14px; line-height: 1.5; }
+        p { margin: 10px 0; color: var(--text-main); font-size: 14px; line-height: 1.5; }
 
-        /* Action Buttons */
-        .action-buttons {
-            display: flex; gap: 10px; margin-top: 15px;
-        }
+        .action-buttons { display: flex; gap: 10px; margin-top: 15px; }
         
         .btn {
             flex: 1; padding: 10px; border-radius: 20px; border: none;
             font-weight: bold; cursor: pointer; font-size: 14px;
         }
-        
-        .btn-accept { background-color: #0f1419; color: white; }
-        .btn-accept:hover { background-color: #222; }
-
+        .btn-accept { background-color: var(--btn-black); color: white; }
         .btn-decline { background-color: white; border: 1px solid #cfd9de; color: #dc3545; }
-        .btn-decline:hover { background-color: #fff5f5; }
 
-        /* Empty State */
+        /* Loading / Empty States */
         .empty-state {
-            text-align: center; padding: 40px; color: #536471; display: none;
+            text-align: center; padding: 40px; color: var(--text-secondary); display: none;
             background: #f7f9f9; border-radius: 16px;
         }
-
-        /* Animation */
-        .fade-out {
-            opacity: 0; transform: translateX(20px); transition: all 0.4s ease;
-        }
-
-        /* --- 4. RIGHT SIDEBAR --- */
-        .right-sidebar { width: 350px; padding: 20px; display: none; }
-        @media (min-width: 1000px) { .right-sidebar { display: block; } }
-
-        .widget-box {
-            background-color: #f7f9f9; border-radius: 16px; padding: 15px; margin-bottom: 20px;
-        }
-        .widget-title { font-weight: bold; font-size: 18px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -127,83 +57,69 @@
     
     <header class="sidebar">
         <div>
-            <div style="padding: 10px; margin-bottom: 10px;">
-                <i class='bx bxs-network-chart' style="font-size: 30px;"></i>
+            <div class="nav-link" style="width: 50px; height: 50px; justify-content: center;">
+                 <i class='bx bxs-network-chart' style="font-size: 30px;"></i>
             </div>
             
             <nav>
                 <a href="home.html" class="nav-link">
-                    <i class='bx bx-home-circle'></i> <span>Home</span>
+                    <i class='bx bxs-home-circle'></i> <span>Home</span>
                 </a>
                 
-                <a href="#" class="nav-link active">
-                    <i class='bx bx-chalkboard'></i> <span>Dashboard</span>
+                <a href="connect.html" class="nav-link">
+                    <i class='bx bx-search'></i> <span>Connect</span>
                 </a>
 
-                <a href="mentorship_final.html" class="nav-link">
-                    <i class='bx bx-group'></i> <span>Find Mentors</span>
+                <a href="mentor_dashboard.html" class="nav-link active">
+                    <i class='bx bx-group'></i> <span>Mentorship</span>
                 </a>
 
+                <a href="notifications.html" class="nav-link">
+                    <i class='bx bx-bell'></i> <span>Notifications</span>
+                </a>
+                
                 <a href="profile.html" class="nav-link">
                     <i class='bx bx-user'></i> <span>Profile</span>
                 </a>
             </nav>
 
-            <button class="post-btn">Post</button>
+            <button class="sidebar-post-btn">Post</button>
         </div>
-
-        <div style="display: flex; align-items: center; gap: 10px; padding: 10px;">
-            <div style="width: 40px; height: 40px; background:#e1e8ed; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold;">AS</div>
+        
+        <div class="user-pill">
+            <div class="user-avatar-sm">M</div>
             <div>
-                <div style="font-weight: bold;">Alex Smith</div>
-                <div style="color: #536471; font-size: 14px;">@alex_mentor</div>
+                <div style="font-weight: bold; font-size: 15px;">Mentor Account</div>
+                <div style="color: #536471; font-size: 14px;">@mentor_user</div>
             </div>
         </div>
     </header>
 
     <main class="main-feed">
-        <div class="feed-header">Mentor Dashboard</div>
+        <div class="feed-header">Mentorship Requests</div>
 
-        <div class="content-container">
+        <div style="padding: 20px;">
             
             <div class="stats-row">
                 <div class="stat-card">
-                    <div class="stat-number" id="pending-count">2</div>
-                    <div class="stat-label">Pending</div>
+                    <div class="stat-number" id="pending-count">-</div>
+                    <div class="stat-label">Pending Requests</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">5</div>
-                    <div class="stat-label">Active</div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Active Mentees</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">12</div>
-                    <div class="stat-label">Completed</div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Sessions Done</div>
                 </div>
             </div>
 
             <div class="section-title">Incoming Requests</div>
 
             <div id="requests-container">
-                <div class="request-card" id="req-1">
-                    <div class="meta-info">Received: Today, 10:30 AM</div>
-                    <h3>Jordan Lee <span style="font-weight:normal; color:#536471;">(CS, Year 3)</span></h3>
-                    <p><strong>Goal:</strong> "I am interested in your work on System Design. I'm struggling with backend architecture and would love your guidance."</p>
-                    
-                    <div class="action-buttons">
-                        <button class="btn btn-accept" onclick="handleDecision('req-1', 'accepted')">Accept</button>
-                        <button class="btn btn-decline" onclick="handleDecision('req-1', 'declined')">Decline</button>
-                    </div>
-                </div>
-
-                <div class="request-card" id="req-2">
-                    <div class="meta-info">Received: Yesterday</div>
-                    <h3>Sarah Connor <span style="font-weight:normal; color:#536471;">(Data Science, Year 4)</span></h3>
-                    <p><strong>Goal:</strong> "I noticed you used to work in AI. I am looking for advice on how to break into the industry."</p>
-                    
-                    <div class="action-buttons">
-                        <button class="btn btn-accept" onclick="handleDecision('req-2', 'accepted')">Accept</button>
-                        <button class="btn btn-decline" onclick="handleDecision('req-2', 'declined')">Decline</button>
-                    </div>
+                <div style="text-align:center; padding:20px; color:#536471;">
+                    <i class='bx bx-loader-alt bx-spin'></i> Loading requests...
                 </div>
             </div>
 
@@ -217,50 +133,95 @@
     </main>
 
     <aside class="right-sidebar">
-        <div class="widget-box">
-            <div class="widget-title">Resources</div>
-            <p style="color:#536471; font-size:14px;">Guide for Mentors</p>
-            <p style="color:#536471; font-size:14px;">Mentorship Best Practices</p>
+        <div class="search-box">
+            <i class='bx bx-search'></i>
+            <input type="text" placeholder="Search">
         </div>
     </aside>
 
 </div>
 
-<script>
-    function handleDecision(cardId, decision) {
-        const card = document.getElementById(cardId);
-        const countElement = document.getElementById('pending-count');
-        let currentCount = parseInt(countElement.innerText);
+<script type="module">
+    import { supabase } from './supabase.js';
 
-        // 1. CONFIRMATION
-        let confirmMsg = decision === 'accepted' 
-            ? "Accept this student?"
-            : "Decline this request?";
+    const container = document.getElementById('requests-container');
+    const emptyMsg = document.getElementById('empty-msg');
+    const pendingCount = document.getElementById('pending-count');
 
-        if (!confirm(confirmMsg)) return;
+    // --- FUNCTION: Fetch Requests from DB ---
+    async function loadRequests() {
+        // Fetch ALL requests with status 'Pending'
+        const { data, error } = await supabase
+            .from('mentorship_requests')
+            .select('*')
+            .eq('status', 'Pending') 
+            .order('created_at', { ascending: false }); // Show newest first
 
-        // 2. ANIMATION
-        card.classList.add('fade-out');
+        if (error) {
+            console.error("Error loading:", error);
+            container.innerHTML = `<div style="text-align:center; padding:20px;">Error loading data. Check console.</div>`;
+            return;
+        }
 
-        // 3. LOGIC
-        setTimeout(() => {
-            card.style.display = 'none'; 
-            
-            // Update counter
-            currentCount--;
-            countElement.innerText = currentCount;
+        // Update Count
+        pendingCount.innerText = data.length;
 
-            // Check empty state
-            if (currentCount === 0) {
-                document.getElementById('empty-msg').style.display = 'block';
-            }
-
-            // Simple Alert Feedback
-            if (decision === 'accepted') {
-                alert(`✅ Request Accepted!`);
-            }
-        }, 400);
+        // Render Data
+        container.innerHTML = '';
+        if (data.length === 0) {
+            emptyMsg.style.display = 'block';
+        } else {
+            emptyMsg.style.display = 'none';
+            data.forEach(req => {
+                const html = `
+                    <div class="request-card" id="card-${req.id}">
+                        <div class="meta-info">Request #${req.id} • For: ${req.mentor_name}</div>
+                        <h3>Student Request</h3>
+                        <p><strong>Message:</strong> "${req.message}"</p>
+                        
+                        <div class="action-buttons">
+                            <button class="btn btn-accept" onclick="updateStatus(${req.id}, 'Accepted')">Accept</button>
+                            <button class="btn btn-decline" onclick="updateStatus(${req.id}, 'Declined')">Decline</button>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
     }
+
+    // --- FUNCTION: Update Status in DB ---
+    window.updateStatus = async function(id, newStatus) {
+        if(!confirm(`Are you sure you want to mark this as ${newStatus}?`)) return;
+
+        // 1. Update Supabase
+        const { error } = await supabase
+            .from('mentorship_requests')
+            .update({ status: newStatus })
+            .eq('id', id);
+
+        if (error) {
+            alert("Error updating database");
+            console.error(error);
+        } else {
+            // 2. Animate and Remove Card from UI
+            const card = document.getElementById(`card-${id}`);
+            card.style.transition = "opacity 0.3s";
+            card.style.opacity = '0';
+            
+            setTimeout(() => {
+                card.remove();
+                // Update counter
+                let count = parseInt(pendingCount.innerText);
+                pendingCount.innerText = count - 1;
+                if(count - 1 === 0) emptyMsg.style.display = 'block';
+            }, 300);
+        }
+    }
+
+    // Load real data on startup
+    loadRequests();
+
 </script>
 
 </body>
